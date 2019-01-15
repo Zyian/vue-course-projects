@@ -3,9 +3,7 @@
     <br />
     <app-new-quote @quoteAdded="newQuote"></app-new-quote>
     <br />
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" :style="progStyle"></div>
-    </div>
+    <app-progress :size="currentSize"></app-progress>
     <app-quote-grid :quotes="quotes" @quoteDel="delQuote"></app-quote-grid>
     <br />
     <div class="row">
@@ -21,6 +19,7 @@
 <script>
 import QuoteGrid from './components/QuoteGrid.vue';
 import NewQuote from './components/NewQuote.vue';
+import ProgressBar from './components/Progress.vue';
 
 export default {
   data() {
@@ -30,14 +29,12 @@ export default {
         'Many many quotes',
       ],
       maxQuotes: 10,
-      progStyle: {
-        width: '100%',
-      },
     };
   },
   components: {
     appQuoteGrid: QuoteGrid,
     appNewQuote: NewQuote,
+    appProgress: ProgressBar,
   },
   methods: {
     newQuote(quote) {
@@ -45,10 +42,14 @@ export default {
         return;
       }
       this.quotes.push(quote);
-      this.progStyle.width = ((this.quotes.length / this.maxQuotes) * 100) + '%';
     },
     delQuote(index) {
       this.quotes.splice(index, 1);
+    },
+  },
+  computed: {
+    currentSize() {
+      return ((this.quotes.length / this.maxQuotes) * 100);
     },
   },
 };
